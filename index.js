@@ -62,7 +62,9 @@ async function run(){
             }
             const cursor = reviewCollection.find(query);
             const result = await cursor.toArray();
-            res.send(result);
+            //sorting
+            let newdata = result.sort((a,b) => b.date.localeCompare(a.date));
+            res.send(newdata);
 
        })
          

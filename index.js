@@ -27,12 +27,15 @@ async function run(){
     try{
         //conect db
         const serviceCollection = client.db('armanKitchen').collection('services');
+        // reveiw db
+        const reviewCollection = client.db('armanKitchen').collection('reviews');
 
         // read all data
         app.get('/services',async(req, res) =>{
             const query ={}
             const cursor = serviceCollection.find(query);
             const services = await cursor.limit(3).toArray();
+            
             res.send(services);
         });
         app.get('/allservices',async(req, res) =>{
@@ -41,6 +44,20 @@ async function run(){
             const services = await cursor.toArray();
             res.send(services);
         });
+          //findOne
+          app.get('/services/:id',async(req, res) =>{
+            const id = req.params.id;
+            const query ={_id: ObjectId(id)}
+            const service = await serviceCollection.findOne(query);
+            res.send(service);
+        });
+         
+        // post on review
+        app.post('/reviews', async(req, res) =>{
+            const order = req.body;
+            const result = await reviewCollection.insertOne(order);
+            res.send(result);
+        })
 
     }
     finally{

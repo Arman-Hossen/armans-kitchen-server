@@ -15,8 +15,7 @@ const port = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
-//user: armanKitchenDB
-//password: TzZyd2nCQkdcVtHt
+
 
 
 
@@ -51,13 +50,29 @@ async function run(){
             const service = await serviceCollection.findOne(query);
             res.send(service);
         });
+
+        app.get('/reviews',async(req, res) =>{
+
+            
+            let query ={}
+            if(req.query.service){
+               query = {
+                service: req.query.service
+               }
+            }
+            const cursor = reviewCollection.find(query);
+            const result = await cursor.toArray();
+            res.send(result);
+
+       })
          
         // post on review
         app.post('/reviews', async(req, res) =>{
-            const order = req.body;
-            const result = await reviewCollection.insertOne(order);
+            const reveiw = req.body;
+            const result = await reviewCollection.insertOne(reveiw);
             res.send(result);
         })
+       
 
     }
     finally{

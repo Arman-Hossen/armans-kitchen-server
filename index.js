@@ -51,7 +51,9 @@ async function run(){
             res.send(service);
         });
 
-        app.get('/reviews',async(req, res) =>{
+        // show review
+
+     app.get('/reviews',async(req, res) =>{
 
             
             let query ={}
@@ -60,14 +62,21 @@ async function run(){
                 service: req.query.service
                }
             }
+            else if(req.query.email){
+                query = {
+                    email: req.query.email
+                   }
+
+            }
             const cursor = reviewCollection.find(query);
             const result = await cursor.toArray();
             //sorting
             let newdata = result.sort((a,b) => b.date.localeCompare(a.date));
             res.send(newdata);
 
-       })
-         
+       });
+    
+
         // post on review
         app.post('/reviews', async(req, res) =>{
             const reveiw = req.body;

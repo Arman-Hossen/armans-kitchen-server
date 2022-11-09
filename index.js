@@ -50,6 +50,12 @@ async function run(){
             const service = await serviceCollection.findOne(query);
             res.send(service);
         });
+          // post on services
+          app.post('/services', async(req, res) =>{
+            const reveiw = req.body;
+            const result = await serviceCollection.insertOne(reveiw);
+            res.send(result);
+        });
 
         // show review
 
